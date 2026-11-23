@@ -1440,6 +1440,8 @@ button.unsorted-note:hover { background: rgba(241, 91, 181, 0.24); }
 /* Locked days: gratitude, letting go, the rating and submit are shown but cannot be changed. */
 .day-lockable { transition: opacity .2s; }
 .page.day-locked .day-lockable { opacity: .7; pointer-events: none; }
+/* An unrated past day: only the star (rating card) stays open until it is chosen. */
+.page.star-open #rating-card { opacity: 1; pointer-events: auto; }
 .lock-note {
   margin: -4px 0 0; text-align: center;
   font-size: 0.85rem; font-style: italic; color: var(--text-faint);

@@ -899,8 +899,11 @@ function renderRatings() {
   }
 }
 
+// A past day with no star yet: only its star is open, so it can be rated. Once rated, the day locks again.
+const starOpen = () => viewKey < today && !dayData.rating;
+
 async function setRating(key) {
-  if (!user || isLockedDay()) return;
+  if (!user || (isLockedDay() && !starOpen())) return;
   try {
     await setDoc(dayRef(user.uid, viewKey), { rating: key, updatedAt: serverTimestamp() }, { merge: true });
   } catch (err) {
@@ -915,6 +918,8 @@ async function setRating(key) {
 function renderSubmitState() {
   const submitted = !!dayData.submitted;
   const locked = isLockedDay();
+  // Keeps the star open on an unrated past day; re-checked on every save, so it locks again once rated.
+  els.page.classList.toggle("star-open", starOpen());
   els.submittedBadge.hidden = !submitted;
   // Only today's page can be submitted or reopened. Earlier days are records; later days are not open yet.
   els.submitBtn.hidden = locked;
